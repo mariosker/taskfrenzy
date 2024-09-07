@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
+	"github.com/mariosker/taskfrenzy/services/auth"
 	"github.com/mariosker/taskfrenzy/types"
 	"github.com/mariosker/taskfrenzy/utils"
 )
@@ -33,15 +35,25 @@ func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := utils.Validate.Struct(user); err != nil {
+		errors := err.(validator.ValidationErrors)
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid payload %v", errors))
+		return
+	}
+
 	// check if user exists
 	_, err := h.store.GetUserByEmail(user.Email)
-	if err == nil {
+	if err != nil {
 		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("user with email %s already exists", user.Email))
 		return
 	}
 
 	// hash password
-	hashedPassword := ""
+	hashedPassword, err := auth.HashPassword(user.Password)
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
 
 	err = h.store.CreateUser(types.User{
 		FirstName: user.FirstName,
