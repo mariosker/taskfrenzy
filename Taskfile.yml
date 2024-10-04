@@ -1,0 +1,36 @@
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - go build -o bin/taskfrenzy cmd/main.go
+    desc: Build the Go binary
+
+  test:
+    cmds:
+      - go test -v ./...
+    desc: Run tests
+
+  run:
+    cmds:
+      - task: build
+      - ./bin/taskfrenzy
+    desc: Build and run the application
+
+  migration:
+    cmds:
+      - migrate create -ext psql -dir cmd/migrate/migrations "{{.ARGS}}"
+    desc: Create a new migration
+    vars:
+      ARGS: ""
+    silent: true
+
+  migrate-up:
+    cmds:
+      - go run cmd/migrate/main.go up
+    desc: Run migrations up
+
+  migrate-down:
+    cmds:
+      - go run cmd/migrate/main.go down
+    desc: Run migrations down
