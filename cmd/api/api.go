@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/mariosker/taskfrenzy/services/task"
 	"github.com/mariosker/taskfrenzy/services/user"
 )
 
@@ -27,6 +28,10 @@ func (s *APIServer) Run() error {
 	userStore := user.NewStore(s.db)
 	userHandler := user.NewHandler(userStore)
 	userHandler.RegisterRoutes(subrouter)
+
+	taskStore := task.NewStore(s.db)
+	taskHandler := task.NewHandler(taskStore)
+	taskHandler.RegisterRoutes(subrouter)
 
 	log.Println("Listening on", s.addr)
 

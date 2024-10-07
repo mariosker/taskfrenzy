@@ -28,3 +28,18 @@ type UserStore interface {
 	CreateUser(user User) error
 	GetUserByID(id int) (*User, error)
 }
+
+type Task struct {
+	ID          int    `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+type CreateTaskPayload struct {
+	Title       string `json:"title" validate:"required,min=1"`
+	Description string `json:"description"`
+}
+
+type TaskStore interface {
+	CreateTask(task Task) error
+}
