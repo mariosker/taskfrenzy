@@ -37,7 +37,7 @@ func main() {
 	// Create a new migration instance with PostgreSQL
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://cmd/migrate/migrations", // Your migrations folder
-		"postgres",                      // Name of the database system
+		cfg.Database,                    // Name of the database system
 		driver,
 	)
 	if err != nil {
