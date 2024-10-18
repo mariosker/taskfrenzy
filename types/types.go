@@ -33,11 +33,13 @@ type Task struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	UserId      string `json:"userId"`
 }
 
 type CreateTaskPayload struct {
 	Title       string `json:"title" validate:"required,min=1"`
 	Description string `json:"description"`
+	UserId      string `json:"userId" validate:"required"`
 }
 
 type TaskStore interface {

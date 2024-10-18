@@ -39,6 +39,7 @@ func (h *Handler) createTask(w http.ResponseWriter, r *http.Request) {
 	err := h.store.CreateTask(types.Task{
 		Title:       task.Title,
 		Description: task.Description,
+		UserId:      task.UserId,
 	})
 
 	if err != nil {
@@ -46,6 +47,6 @@ func (h *Handler) createTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.WriteJSON(w, http.StatusCreated, nil)
+	_ = utils.WriteJSON(w, http.StatusCreated, nil)
 
 }

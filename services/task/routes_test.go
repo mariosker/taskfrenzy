@@ -41,6 +41,7 @@ func TestTaskServiceHandlers(t *testing.T) {
 		payload := types.CreateTaskPayload{
 			Description: "hhh",
 			Title:       "asadss",
+			UserId:      "2",
 		}
 		marshalled, _ := json.Marshal(payload)
 		req, err := http.NewRequest(http.MethodPost, "/tasks", bytes.NewBuffer(marshalled))

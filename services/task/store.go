@@ -16,7 +16,7 @@ func NewStore(db *pgxpool.Pool) *Store {
 }
 
 func (s *Store) CreateTask(task types.Task) error {
-	_, err := s.db.Exec(context.Background(), "INSERT INTO tasks (title, description) VALUES ($1, $2)", task.Title, task.Description)
+	_, err := s.db.Exec(context.Background(), "INSERT INTO tasks (title, description, userId) VALUES ($1, $2, $3)", task.Title, task.Description, task.UserId)
 	if err != nil {
 		return err
 	}
