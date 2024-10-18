@@ -18,7 +18,8 @@ type Config struct {
 }
 
 func initConfig() Config {
-	godotenv.Load()
+	_ = godotenv.Load()
+
 	return Config{
 		PublicHost:             getEnv("PublicHost", "http://localhost"),
 		Port:                   getEnv("Port", "8080"),
