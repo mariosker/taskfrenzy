@@ -3,7 +3,7 @@ version: "3"
 tasks:
   build:
     cmds:
-      - go build -o bin/taskfrenzy cmd/main.go
+      - go build -o bin/taskfrenzy{{if eq OS "windows"}}.exe{{end}} cmd/main.go
     desc: Build the Go binary
 
   test:
@@ -14,7 +14,7 @@ tasks:
   run:
     cmds:
       - task: build
-      - ./bin/taskfrenzy
+      - bin/taskfrenzy{{if eq OS "windows"}}.exe{{end}}
     desc: Build and run the application
 
   migration:
