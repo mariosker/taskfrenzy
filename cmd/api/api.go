@@ -30,7 +30,7 @@ func (s *APIServer) Run() error {
 	userHandler.RegisterRoutes(subrouter)
 
 	taskStore := task.NewStore(s.db)
-	taskHandler := task.NewHandler(taskStore)
+	taskHandler := task.NewHandler(taskStore, userStore)
 	taskHandler.RegisterRoutes(subrouter)
 
 	log.Println("Listening on", s.addr)

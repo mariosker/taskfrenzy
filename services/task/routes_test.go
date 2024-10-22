@@ -3,6 +3,7 @@ package task
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,7 +14,8 @@ import (
 
 func TestTaskServiceHandlers(t *testing.T) {
 	taskStore := &mockTaskStore{}
-	handler := NewHandler(taskStore)
+	userStore := &mockUserStore{}
+	handler := NewHandler(taskStore, userStore)
 
 	t.Run("should fail if the task payload is invalid", func(t *testing.T) {
 		payload := types.CreateTaskPayload{
@@ -62,5 +64,13 @@ func TestTaskServiceHandlers(t *testing.T) {
 }
 
 type mockTaskStore struct{}
+type mockUserStore struct{}
 
 func (m *mockTaskStore) CreateTask(task types.Task) error { return nil }
+func (m *mockUserStore) GetUserByEmail(email string) (*types.User, error) {
+	return nil, fmt.Errorf("user not found")
+}
+
+func (m *mockUserStore) CreateUser(user types.User) error { return nil }
+
+func (m *mockUserStore) GetUserByID(id int) (*types.User, error) { return nil, nil }
